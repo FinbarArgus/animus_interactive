@@ -1,0 +1,37 @@
+<div class="reveal">
+<div class="slides">
+
+<section id="title" class="title-slide">
+  <div class="title-wrap">
+    <div class="eyebrow">animus_interactive template</div>
+    <h1>A damped oscillator, one slider at a time</h1>
+    <p class="authors">Author One, Author Two</p>
+  </div>
+  <aside class="notes">Speaker notes go here, not on the slide. Press S for the speaker view, D for light/dark.</aside>
+</section>
+
+<section id="oscillator" data-prevent-swipe>
+  <div class="eyebrow">Example</div>
+  <h2>Damping sets how fast the swing dies</h2>
+  <div class="split">
+    <div class="eqpanel">
+      <div class="eqbox">\[ \class{term t-acc}{\ddot x}+\class{term t-damp}{2\zeta\omega\,\dot x}+\class{term t-spring}{\omega^2x}=0 \]</div>
+      <dl class="tips">
+        <dt>t-acc</dt><dd>The acceleration of the mass.</dd>
+        <dt>t-damp</dt><dd>Damping: a force against the velocity, set by the damping ratio ζ.</dd>
+        <dt>t-spring</dt><dd>The spring: a force back towards rest, set by the natural frequency ω.</dd>
+      </dl>
+      <p class="note">Natural frequency ω = <b data-num="omega|s2"></b> rad/s, from the data.</p>
+      <div class="ctl"><label for="osc-zeta">ζ = <span id="osc-zetav"></span></label><input id="osc-zeta" type="range" min="0" max="150" value="10"><button class="reset">Reset</button></div>
+      <span class="fragment preset" data-preset='{"zeta": 1}'></span>
+      <span class="fragment preset" data-preset='{"zeta": 0.05}'></span>
+    </div>
+    <div class="plot" data-fig="oscillator"></div>
+  </div>
+  <aside class="notes">Drag the slider or click: the first click shows critical damping (zeta = 1), the second light damping.</aside>
+</section>
+
+<section class="divider"><div class="eyebrow">Part 2</div><h2>A divider slide</h2></section>
+
+</div>
+</div>
