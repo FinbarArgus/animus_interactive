@@ -144,7 +144,24 @@ mjx-container[jax="SVG"] { font-size: 104% !important; }
   max-width: calc(100% - 92px); box-sizing: border-box; padding: 14px 20px; border-radius: 6px; background: var(--ink); color: var(--bg);
   font-family: var(--font-body); font-size: 19px; line-height: 1.45; box-shadow: 0 6px 18px rgba(0,0,0,.28);
   visibility: hidden; opacity: 0; transition: opacity .12s; pointer-events: none; }
+.reveal .guide::after { content: ""; position: absolute; left: 0; right: 0; top: 100%; height: 16px; } /* bridges the gap to the ? */
 .reveal .guide p { margin: 0 0 8px; } .reveal .guide p:last-child { margin: 0; }
 .reveal .guide b { color: var(--bg); }
-.reveal .guide-q:hover + .guide, .reveal .guide-q:focus-visible + .guide, .reveal .guide.pinned { visibility: visible; opacity: 1; }
+.reveal .guide-q:hover + .guide, .reveal .guide-q:focus-visible + .guide, .reveal .guide:hover, .reveal .guide:focus-within,
+  .reveal .guide.pinned { visibility: visible; opacity: 1; pointer-events: auto; }
+.reveal .guide p.q { font-weight: 600; }
+.reveal .guide ol.quiz { list-style: none; counter-reset: opt; margin: 4px 0 0; padding: 0; display: grid; gap: 6px; }
+.reveal .guide ol.quiz > li { counter-increment: opt; padding: 5px 10px 5px 36px; position: relative; border: 1px solid var(--muted);
+  border-radius: 6px; cursor: pointer; font-size: 18px; line-height: 1.35; }
+.reveal .guide ol.quiz > li::before { content: counter(opt, upper-alpha); position: absolute; left: 12px; font-weight: 600; }
+.reveal .guide ol.quiz > li:not(.picked):hover { border-color: var(--bg); }
+.reveal .guide ol.quiz > li.right { border-color: #3fae6a; box-shadow: inset 4px 0 0 #3fae6a; }
+.reveal .guide ol.quiz > li.wrong { border-color: #e0614f; box-shadow: inset 4px 0 0 #e0614f; }
+.reveal .guide ol.quiz .why { display: none; margin-top: 4px; font-size: 16px; opacity: .85; }
+.reveal .guide ol.quiz > li.picked .why { display: block; }
+.reveal .guide ol.quiz > li.right .why::before { content: "Right. "; font-weight: 600; color: #3fae6a; }
+.reveal .guide ol.quiz > li.wrong .why::before { content: "Not quite. "; font-weight: 600; color: #e0614f; }
+/* on a divider's dark background the panel takes the page colours, so it stands out in both themes */
+.reveal section.divider .guide { background: var(--bg); color: var(--ink); border: 1px solid var(--rule); }
+.reveal section.divider .guide b, .reveal section.divider .guide ol.quiz > li:not(.picked):hover { color: var(--ink); border-color: var(--ink); }
 .print-pdf .reveal .guide-q, .print-pdf .reveal .guide { display: none; }

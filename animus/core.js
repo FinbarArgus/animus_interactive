@@ -12,6 +12,8 @@
  * fires a "term" event figures can listen to. A <dl class="tips"> on the slide (dt "t-name", dd text) gives it a tip.
  * Guides: a <div class="guide"> in a slide is tutorial text: the slide shows only a "?" at the bottom, and
  * hovering it (or a click, which pins it) shows the guide. Presenting, don't hover; reading alone, it guides.
+ * A guide can hold a quiz: <p class="q">question</p><ol class="quiz"><li data-right>option<span class="why">reason
+ * </span></li>...</ol>; picking an option marks it right or wrong and shows its reason.
  * Numbers: <span data-num="path.to.value|how"> prints a value from D (see numberFrom).
  * Config: window.ANIMUS = { dataId, channel, reveal }, set by the build; reveal holds Reveal options that override
  * the defaults in boot().
@@ -197,6 +199,15 @@ function addGuides() {
     b.type = "button"; b.className = "guide-q"; b.textContent = "?"; b.setAttribute("aria-label", "Guide to this slide");
     b.addEventListener("click", () => { const on = !g.classList.contains("pinned"); unpinGuides(); g.classList.toggle("pinned", on); });
     g.before(b);
+  }
+  for (const li of $$(".guide ol.quiz > li")) {
+    li.tabIndex = 0;
+    const pick = () => {
+      li.parentNode.querySelectorAll("li").forEach((o) => o.classList.remove("picked", "right", "wrong"));
+      li.classList.add("picked", li.hasAttribute("data-right") ? "right" : "wrong");
+    };
+    li.addEventListener("click", pick);
+    li.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); pick(); } });
   }
 }
 function unpinGuides() { $$(".guide.pinned").forEach((g) => g.classList.remove("pinned")); }

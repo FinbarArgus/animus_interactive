@@ -30,7 +30,8 @@ def test_question_mark_shows_the_guide_on_hover(deck):
         pg.goto(deck.as_uri() + "#/oscillator")
         pg.wait_for_function("window.deck && window.deck.isReady()", timeout=60000)
         vis = "getComputedStyle(document.querySelector('#oscillator .guide')).visibility"
-        assert pg.evaluate("document.querySelectorAll('.guide-q').length") == 1  # only the slide with a guide
+        assert pg.evaluate("document.querySelectorAll('.guide-q').length") == 2  # the oscillator and the divider
+        assert pg.evaluate("document.querySelector('#title .guide-q')") is None  # no guide, no ?
         assert pg.evaluate(vis) == "hidden"
         pg.hover("#oscillator .guide-q")
         pg.wait_for_timeout(200)
