@@ -135,3 +135,16 @@ mjx-container[jax="SVG"] { font-size: 104% !important; }
 .reveal dl.tips { display: none; }
 .tipbox { position: fixed; z-index: 100; max-width: 380px; background: var(--ink); color: var(--bg); font-family: var(--font-body);
   font-size: 17px; line-height: 1.4; padding: 10px 14px; border-radius: 6px; pointer-events: none; box-shadow: 0 4px 14px rgba(0,0,0,.25); }
+/* guides: tutorial text behind a "?" at the bottom of a slide */
+.reveal .guide-q { position: absolute; left: 50%; bottom: 8px; transform: translateX(-50%); z-index: 20; width: 28px; height: 28px;
+  padding: 0; border: 1px solid var(--rule); border-radius: 50%; background: var(--bg); color: var(--muted);
+  font: 600 16px/1 var(--font-body); cursor: help; }
+.reveal .guide-q:hover, .reveal .guide-q:focus-visible { color: var(--accent); border-color: var(--accent); }
+.reveal .guide { position: absolute; left: 50%; bottom: 44px; transform: translateX(-50%); z-index: 20; width: 900px;
+  max-width: calc(100% - 92px); box-sizing: border-box; padding: 14px 20px; border-radius: 6px; background: var(--ink); color: var(--bg);
+  font-family: var(--font-body); font-size: 19px; line-height: 1.45; box-shadow: 0 6px 18px rgba(0,0,0,.28);
+  visibility: hidden; opacity: 0; transition: opacity .12s; pointer-events: none; }
+.reveal .guide p { margin: 0 0 8px; } .reveal .guide p:last-child { margin: 0; }
+.reveal .guide b { color: var(--bg); }
+.reveal .guide-q:hover + .guide, .reveal .guide-q:focus-visible + .guide, .reveal .guide.pinned { visibility: visible; opacity: 1; }
+.print-pdf .reveal .guide-q, .print-pdf .reveal .guide { display: none; }

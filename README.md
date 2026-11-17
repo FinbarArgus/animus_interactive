@@ -45,6 +45,10 @@ pixels by under 10/255 between runs of the same build.
 - Clicks: `<span class="fragment preset" data-preset='{"zeta": 1}'></span>` sets the slide's figure when reached.
 - Terms: `\class{term t-name}{...}` in the maths; `<dl class="tips"><dt>t-name</dt><dd>tip</dd></dl>` on the
   slide; a fragment with `data-hl="t-name"` highlights it.
+- Guides: `<div class="guide"><p>...</p></div>` in a slide. The slide shows only a "?" at the bottom centre;
+  hovering it shows the guide (a click pins it). The same deck is a talk (don't hover) and a tutorial (read the
+  guides). Guides are visible text: numbers in them come from `data-num` too. `check_deck --guides` lists slides
+  without one.
 - Numbers from the data: `<span data-num="path.to.value|x"></span>` (`x` adds ×, `s2` two significant figures,
   `i` integer, `pct` percent; `rows[name]` picks the row whose `method` is `name`).
 - D toggles light/dark; S opens the speaker view.
