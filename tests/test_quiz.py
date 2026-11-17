@@ -41,6 +41,8 @@ def test_quiz_marks_the_pick(tmp_path):
         pg.mouse.move(5, 5)
         pg.wait_for_timeout(50)
         assert pg.evaluate(vis) == "visible"
+        g = pg.locator(".divider .guide").bounding_box()
+        assert pg.evaluate(f"!!document.elementFromPoint({g['x'] + 30}, {g['y'] + 10}).closest('.guide')")  # still takes the pointer
         pg.wait_for_timeout(600)
         assert pg.evaluate(vis) == "hidden"
         assert "wrong" in pick(0)
