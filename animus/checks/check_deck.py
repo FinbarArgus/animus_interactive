@@ -6,7 +6,8 @@ state to <out>/<scheme>_<index>_<id>.png (and ..._end.png).
     python -m animus.checks.check_deck dist/deck.html --out shots [--scheme dark] [--frozen]
 
 Prints one line per slide (flags only where there is a problem) and the console errors. --frozen stubs the clock and
-turns off CSS transitions, so two builds' screenshots can be compared pixel by pixel (compare_shots.py).
+turns off CSS transitions, so two builds' screenshots can be compared pixel by pixel (compare_shots.py). --guides
+flags slides without a tutorial guide (dividers excepted).
 """
 import argparse
 import json
@@ -23,6 +24,7 @@ ap.add_argument("deck", type=Path)
 ap.add_argument("--out", type=Path, required=True)
 ap.add_argument("--scheme", default="light", choices=["light", "dark"])
 ap.add_argument("--frozen", action="store_true")
+ap.add_argument("--guides", action="store_true", help="flag slides with no .guide (dividers excepted)")
 a = ap.parse_args()
 a.out.mkdir(parents=True, exist_ok=True)
 for old in a.out.glob(f"{a.scheme}_*.png"):
@@ -44,7 +46,8 @@ with sync_playwright() as p:
             if (q.width && (q.bottom > r.top + 720*sc + 2 || q.right > r.left + 1280*sc + 2)) over.push((e.id||e.className||e.tagName).toString().slice(0,40)); }
           const missing = [...s.querySelectorAll('[data-num]')].filter(e => e.textContent.includes('?')).map(e => e.dataset.num);
           const failed = [...s.querySelectorAll('[data-fig]')].filter(e => e.textContent.startsWith('Figure failed')).map(e => e.textContent);
-          return { id: s.id, over: [...new Set(over)].slice(0, 6), missing, failed, frags: s.querySelectorAll('.fragment').length };
+          return { id: s.id, over: [...new Set(over)].slice(0, 6), missing, failed, frags: s.querySelectorAll('.fragment').length,
+                   noguide: !s.querySelector(':scope > .guide') && !s.classList.contains('divider') };
         }""")
         pg.screenshot(path=str(a.out / f"{a.scheme}_{i:02d}_{info['id'] or 'x'}.png"))
         report.append((i, info))
@@ -60,7 +63,7 @@ with sync_playwright() as p:
 bad = 0
 for i, info in report:
     flag = ((" OVER " + str(info["over"]) if info["over"] else "") + (" MISSING " + str(info["missing"]) if info["missing"] else "")
-            + (" FAILED " + str(info["failed"]) if info["failed"] else ""))
+            + (" FAILED " + str(info["failed"]) if info["failed"] else "") + (" NO GUIDE" if a.guides and info["noguide"] else ""))
     bad += bool(flag)
     print(i, info["id"], flag)
 print("console:", json.dumps(errs[:20], indent=0))

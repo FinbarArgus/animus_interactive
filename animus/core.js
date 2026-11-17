@@ -10,6 +10,10 @@
  * reaches them, so the clicker alone can run every figure. A button .reset on the slide restores the defaults.
  * Terms: an equation term \class{term t-name}{...} highlights on hover or on a fragment with data-hl="t-name", and
  * fires a "term" event figures can listen to. A <dl class="tips"> on the slide (dt "t-name", dd text) gives it a tip.
+ * Guides: a <div class="guide"> in a slide is tutorial text: the slide shows only a "?" at the bottom, and
+ * hovering it (or a click, which pins it) shows the guide. Presenting, don't hover; reading alone, it guides.
+ * A guide can hold a quiz: <p class="q">question</p><ol class="quiz"><li data-right>option<span class="why">reason
+ * </span></li>...</ol>; picking an option marks it right or wrong and shows its reason.
  * Numbers: <span data-num="path.to.value|how"> prints a value from D (see numberFrom).
  * Config: window.ANIMUS = { dataId, channel, reveal }, set by the build; reveal holds Reveal options that override
  * the defaults in boot().
@@ -173,6 +177,7 @@ function boot() {
   }
   for (const n of $$("[data-num]")) n.textContent = numberFrom(n.dataset.num);
   linkTerms();
+  addGuides();
   const deck = new Reveal({
     width: 1280, height: 720, margin: 0.02, hash: true, center: false, touch: false, controls: true, progress: true,
     slideNumber: "c/t", transition: "fade", transitionSpeed: "fast", backgroundTransition: "none", pdfMaxPagesPerSlide: 1,
@@ -183,9 +188,29 @@ function boot() {
   });
   window.deck = deck;
   deck.initialize().then(() => { applyPresets(deck.getCurrentSlide()); termFragments(deck.getCurrentSlide()); sizeHits(deck.getCurrentSlide()); });
-  deck.on("slidechanged", (e) => { document.activeElement?.blur?.(); tipBox.hidden = true; applyPresets(e.currentSlide); termFragments(e.currentSlide); sizeHits(e.currentSlide); });
+  deck.on("slidechanged", (e) => { document.activeElement?.blur?.(); tipBox.hidden = true; unpinGuides(); applyPresets(e.currentSlide); termFragments(e.currentSlide); sizeHits(e.currentSlide); });
   for (const ev of ["fragmentshown", "fragmenthidden"]) deck.on(ev, () => { applyPresets(deck.getCurrentSlide()); termFragments(deck.getCurrentSlide()); });
 }
+/* Guides: a "?" button before each slide's .guide; CSS shows the guide while the button is hovered or focused,
+   or while the guide is pinned by a click. */
+function addGuides() {
+  for (const g of $$(".reveal .slides section > .guide")) {
+    const b = document.createElement("button");
+    b.type = "button"; b.className = "guide-q"; b.textContent = "?"; b.setAttribute("aria-label", "Guide to this slide");
+    b.addEventListener("click", () => { const on = !g.classList.contains("pinned"); unpinGuides(); g.classList.toggle("pinned", on); });
+    g.before(b);
+  }
+  for (const li of $$(".guide ol.quiz > li")) {
+    li.tabIndex = 0;
+    const pick = () => {
+      li.parentNode.querySelectorAll("li").forEach((o) => o.classList.remove("picked", "right", "wrong"));
+      li.classList.add("picked", li.hasAttribute("data-right") ? "right" : "wrong");
+    };
+    li.addEventListener("click", pick);
+    li.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); pick(); } });
+  }
+}
+function unpinGuides() { $$(".guide.pinned").forEach((g) => g.classList.remove("pinned")); }
 function toggleTheme() {
   const root = document.documentElement, dark = root.dataset.theme ? root.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
   root.dataset.theme = dark ? "light" : "dark";
