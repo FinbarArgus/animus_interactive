@@ -30,12 +30,19 @@ def test_quiz_marks_the_pick(tmp_path):
         def pick(i):  # move continuously from the ? to option i, as a hand would, and click it
             o = pg.locator(".divider ol.quiz > li").nth(i).bounding_box()
             pg.mouse.move(qx, qy)
-            pg.mouse.move(o["x"] + 20, o["y"] + o["height"] / 2, steps=25)
+            pg.mouse.move(o["x"] + 20, o["y"] + o["height"] / 2, steps=5)  # a quick move: the hide grace keeps the panel
             pg.mouse.down()
             pg.mouse.up()
             pg.wait_for_timeout(100)
             return pg.evaluate(f"[...document.querySelectorAll('.divider ol.quiz > li')][{i}].className")
 
+        # leaving the ? hides the guide only after a short grace, so a quick move onto the panel keeps it open
+        vis = "getComputedStyle(document.querySelector('.divider .guide')).visibility"
+        pg.mouse.move(5, 5)
+        pg.wait_for_timeout(50)
+        assert pg.evaluate(vis) == "visible"
+        pg.wait_for_timeout(600)
+        assert pg.evaluate(vis) == "hidden"
         assert "wrong" in pick(0)
         assert pg.evaluate("getComputedStyle(document.querySelector('.divider ol.quiz > li .why')).display") == "block"
         assert "right" in pick(1)

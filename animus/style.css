@@ -143,12 +143,13 @@ mjx-container[jax="SVG"] { font-size: 104% !important; }
 .reveal .guide { position: absolute; left: 50%; bottom: 44px; transform: translateX(-50%); z-index: 20; width: 900px;
   max-width: calc(100% - 92px); box-sizing: border-box; padding: 14px 20px; border-radius: 6px; background: var(--ink); color: var(--bg);
   font-family: var(--font-body); font-size: 19px; line-height: 1.45; box-shadow: 0 6px 18px rgba(0,0,0,.28);
-  visibility: hidden; opacity: 0; transition: opacity .12s; pointer-events: none; }
+  visibility: hidden; opacity: 0; pointer-events: none;
+  transition: opacity .12s .2s, visibility 0s .32s; } /* a 0.2 s grace before hiding, so a quick move from the ? onto the panel keeps it */
 .reveal .guide::after { content: ""; position: absolute; left: 0; right: 0; top: 100%; height: 16px; } /* bridges the gap to the ? */
 .reveal .guide p { margin: 0 0 8px; } .reveal .guide p:last-child { margin: 0; }
 .reveal .guide b { color: var(--bg); }
 .reveal .guide-q:hover + .guide, .reveal .guide-q:focus-visible + .guide, .reveal .guide:hover, .reveal .guide:focus-within,
-  .reveal .guide.pinned { visibility: visible; opacity: 1; pointer-events: auto; }
+  .reveal .guide.pinned { visibility: visible; opacity: 1; pointer-events: auto; transition: opacity .12s; }
 .reveal .guide p.q { font-weight: 600; }
 .reveal .guide ol.quiz { list-style: none; counter-reset: opt; margin: 4px 0 0; padding: 0; display: grid; gap: 6px; }
 .reveal .guide ol.quiz > li { counter-increment: opt; padding: 5px 10px 5px 36px; position: relative; border: 1px solid var(--muted);

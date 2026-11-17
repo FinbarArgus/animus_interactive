@@ -39,7 +39,7 @@ for name in names:
     d = ImageChops.difference(ia, ib)
     box = d.getbbox()
     if box:
-        h = d.convert("L").histogram()
+        h = ImageChops.lighter(ImageChops.lighter(*d.split()[:2]), d.split()[2]).histogram()  # largest channel difference
         bad.append(f"{name} box {box} pixels {sum(h[1:])} max {max(i for i, v in enumerate(h) if v)}")
 print(f"{n} compared, {len(bad)} differ, {len(unmatched)} unmatched {unmatched[:10]}")
 print("\n".join(bad))
