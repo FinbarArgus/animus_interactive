@@ -1,7 +1,7 @@
 # animus_interactive
 
 Interactive slide decks (and later, tutorials) as one offline HTML file: reveal.js slides with MathJax equations and
-live SVG figures driven by sliders, clicks and hover. Started from the QPOpInf talk's engine.
+live SVG figures driven by sliders, clicks and hover.
 
 It is a template and a set of helpers, not a framework: each deck writes its own figures and content, and this repo
 carries the build, the runtime, base styles, headless checks and the conventions (`CLAUDE.md`) learnt making the
@@ -54,3 +54,7 @@ pixels by under 10/255 between runs of the same build.
 - Numbers from the data: `<span data-num="path.to.value|x"></span>` (`x` adds ×, `s2` two significant figures,
   `i` integer, `pct` percent; `rows[name]` picks the row whose `method` is `name`).
 - D toggles light/dark; S opens the speaker view.
+
+## Licence
+
+Apache-2.0: see `LICENSE`.

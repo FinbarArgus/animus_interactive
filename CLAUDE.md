@@ -5,10 +5,9 @@ The engine for Finbar's interactive decks (README.md has the layout and API). Th
 
 - **Branches:** base branch `main` (PRs to it; Finbar merges). Local `devel` holds every feature, merged when its PR
   opens. Work in `.claude/worktrees/<name>`.
-- **Private repo.** Decks pin it as a git submodule; a change here must keep every deck that pins it building. Check
-  a change against the template and against the QPOpInf talk (`QPopInf_methods_paper`, branch `talk`,
-  `docs/talk/`): frozen screenshots before and after must match (README, "A refactor that must not change the
-  slides").
+- **Public repo, Apache-2.0.** Decks pin it as a git submodule; a change here must keep every deck that pins it
+  building. Check a change against the template and against every deck that pins it: frozen screenshots before and
+  after must match (README, "A refactor that must not change the slides").
 - **Checks:** `python3 template/build_deck.py --check`, then the checks in `animus/checks/` with a Python that has
   Playwright + Chromium (one is at `~/.cache/claude-tmp/ci-fix-pypi-venv/bin/python`).
 
@@ -18,8 +17,7 @@ The engine for Finbar's interactive decks (README.md has the layout and API). Th
 - Every plot has x and y axis titles; the y title runs along the axis.
 - He drives mode/rank sliders himself: no click steps on slides whose figure is a slider over modes.
 - Real data in figures, never empty placeholder matrices.
-- Numbers on slides come from the data through `data-num`, never typed in (a deck can enforce it with a check hook,
-  as the QPOpInf talk does for its results slides).
+- Numbers on slides come from the data through `data-num`, never typed in (a deck can enforce it with a check hook).
 - A page or slide set that shows a result opens with a provenance diagram of how it was produced (workspace
   CLAUDE.md, "Result pages").
 - His slide numbers often lag the deck by one: confirm which slide he means by its content.
