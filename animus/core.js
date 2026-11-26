@@ -216,7 +216,7 @@ function toggleTheme() {
   root.dataset.theme = dark ? "light" : "dark";
   for (const f of Object.values(FIGS)) if (f.ready) f.set({}); // redraw colours read from the theme
 }
-/* numbers printed in slide text come from the data: data-num="results.tables.13_simple_starling_more.rows[beat map].speedup|x" */
+/* numbers printed in slide text come from the data: data-num="results.rows[2].speedup|x" */
 function numberFrom(spec) {
   const [p, how] = spec.split("|");
   let v = D;
