@@ -28,3 +28,16 @@ def open_deck(browser, deck: Path, *, scheme: str = "light", frozen: bool = Fals
     pg.goto(Path(deck).resolve().as_uri() + (f"#/{slide}" if slide else ""))
     pg.wait_for_function("window.deck && window.deck.isReady && window.deck.isReady()", timeout=60000)
     return pg
+
+
+def step_fragments(pg, wait_ms: int = 120) -> int:
+    """Click through the current slide's fragments and return the number of clicks.
+
+    Fragments that share a data-fragment-index show on one click, so this steps until Reveal has none left
+    and never moves to the next slide.
+    """
+    clicks = 0
+    while pg.evaluate("deck.nextFragment()"):
+        clicks += 1
+        pg.wait_for_timeout(wait_ms)
+    return clicks

@@ -17,7 +17,7 @@ from pathlib import Path
 from playwright.sync_api import sync_playwright
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from common import open_deck  # noqa: E402
+from common import open_deck, step_fragments  # noqa: E402
 
 ap = argparse.ArgumentParser()
 ap.add_argument("deck", type=Path)
@@ -55,9 +55,7 @@ with sync_playwright() as p:
     for i, info in report:
         if info["frags"]:
             pg.evaluate(f"deck.slide({i}, 0, -1)")
-            for _ in range(info["frags"]):
-                pg.evaluate("deck.next()")
-                pg.wait_for_timeout(300 if a.frozen else 120)
+            step_fragments(pg, 300 if a.frozen else 120)
             pg.screenshot(path=str(a.out / f"{a.scheme}_{i:02d}_{info['id'] or 'x'}_end.png"))
     b.close()
 bad = 0
